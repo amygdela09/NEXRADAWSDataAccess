@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request
+import os
+from datetime import datetime
+
 # from flask import url_for
 import nexradaws
 import pytz
-from datetime import datetime
-import os
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
