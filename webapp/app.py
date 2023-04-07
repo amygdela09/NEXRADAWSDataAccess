@@ -9,13 +9,13 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route("/")
 def index():
     # to do
     # generate year range on datepicker from avail years
     # generate radar site list from avail radars
     # return image preview
-    return render_template('index.html')
+    return render_template("index.html")
 
 
 def getDataAWS(radar, sYear, sDay, sMonth, sStartH, sStartM, sEndH, sEndM):
@@ -23,7 +23,7 @@ def getDataAWS(radar, sYear, sDay, sMonth, sStartH, sStartM, sEndH, sEndM):
 
     downloadDirectory = os.getcwd()
 
-    timezone = pytz.timezone('US/Central')
+    timezone = pytz.timezone("US/Central")
     start = timezone.localize(datetime(sYear, sMonth, sDay, sStartH, sStartM))
     end = timezone.localize(datetime(sYear, sMonth, sDay, sEndH, sEndM))
     # noinspection PyTypeChecker
@@ -34,32 +34,41 @@ def getDataAWS(radar, sYear, sDay, sMonth, sStartH, sStartM, sEndH, sEndM):
     print(results.success)
     print(results.failed)
 
-    return 'done'
+    return "done"
 
 
-@app.route('/getData', methods=['post', 'get'])
+@app.route("/getData", methods=["post", "get"])
 def getData():
-    if request.method == 'POST':
-        radarSite = request.form['selectedRadar']
-        selectedTimeTo = request.form['timeTo']
-        selectedTimeFrom = request.form['timeFrom']
-        selectedDate = request.form['date']
-        sDate = selectedDate.split('/', 2)
+    if request.method == "POST":
+        radarSite = request.form["selectedRadar"]
+        selectedTimeTo = request.form["timeTo"]
+        selectedTimeFrom = request.form["timeFrom"]
+        selectedDate = request.form["date"]
+        sDate = selectedDate.split("/", 2)
         sYear = int(sDate[2])
         sDay = int(sDate[1])
         sMonth = int(sDate[0])
-        sTimeTo = selectedTimeTo.split(':', 1)
-        sTimeFrom = selectedTimeFrom.split(':', 1)
+        sTimeTo = selectedTimeTo.split(":", 1)
+        sTimeFrom = selectedTimeFrom.split(":", 1)
         sTimeToHR = int(sTimeTo[0])
         sTimeToMIN = int(sTimeTo[1])
         sTimeFromHR = int(sTimeFrom[0])
         sTimeFromMIN = int(sTimeFrom[1])
 
         try:
-            results = getDataAWS(radarSite, sYear, sDay, sMonth, sTimeFromHR, sTimeFromMIN, sTimeToHR, sTimeToMIN)
+            results = getDataAWS(
+                radarSite,
+                sYear,
+                sDay,
+                sMonth,
+                sTimeFromHR,
+                sTimeFromMIN,
+                sTimeToHR,
+                sTimeToMIN,
+            )
         except TypeError or ValueError or IndexError:
-            results = 'Error retrieving data'
+            results = "Error retrieving data"
         return results
     else:
-        error = 'Could not post form'
+        error = "Could not post form"
         return error

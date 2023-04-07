@@ -1,6 +1,7 @@
 import calendar
-from pathlib import Path
 import sys
+from pathlib import Path
+
 try:
     import ujson as json
 except ImportError:
@@ -8,7 +9,16 @@ except ImportError:
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QScreen
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QDateTimeEdit, QLabel, QHBoxLayout, QComboBox
+from PySide6.QtWidgets import (
+    QApplication,
+    QWidget,
+    QVBoxLayout,
+    QPushButton,
+    QDateTimeEdit,
+    QLabel,
+    QHBoxLayout,
+    QComboBox,
+)
 import nexradaws
 
 ROOT_DIR = Path(__file__).parent
@@ -37,13 +47,18 @@ def create_site_dict(conn):
         f.truncate()
 
 
+class SiteAvailabilityDownloadProgress(QWidget):
+    def __init__(self):
+        super().__init__()
+
+
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.conn = nexradaws.NexradAwsInterface()
         self.setup()
 
-    def dt_edit_hanged(self, event):
+    def dt_edit_changed(self, event):
         print(event)
 
     def setup(self):
@@ -71,6 +86,8 @@ class MainWindow(QWidget):
         self.dt_edit = QDateTimeEdit(calendarPopup=True)
         self.dt_edit.dateTimeChanged.connect(self.dt_edit_changed)
         hlayout1.addWidget(self.dt_edit, alignment=Qt.AlignCenter)
+
+        # default date is 2000/1/1 12:00AM
 
         vlayout.addLayout(hlayout1)
 
