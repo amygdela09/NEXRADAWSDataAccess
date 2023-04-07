@@ -11,6 +11,8 @@ pyside6 = "*"
 matplotlib = "*"
 
 [dev-packages]
+black = {extras = ["d"], version = "*"}
+flake8 = "*"
 
 [requires]
 python_version = "3.10"
