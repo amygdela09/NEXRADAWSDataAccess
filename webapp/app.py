@@ -14,7 +14,6 @@ def index():
     # generate year range on datepicker from avail years
     # generate radar site list from avail radars
     # return image preview
-    # better modal styling and ajax updating components
     return render_template('index.html')
 
 
