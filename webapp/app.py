@@ -1,32 +1,27 @@
-import os
-from datetime import datetime
-
-# from flask import url_for
+from pathlib import Path
+from datetime import datetime, date
 import nexradaws
 import pytz
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 
 app = Flask(__name__)
 
-
 @app.route("/")
 def index():
-    # to do
-    # generate year range on datepicker from avail years
-    # generate radar site list from avail radars
-    # return image preview
-    return render_template("index.html")
+    conn = nexradaws.NexradAwsInterface()
+    sitelist =  conn.get_avail_radars('2013', '05', '20')
+    return render_template("index.html", sites=sitelist)
 
 
 def getDataAWS(radar, sYear, sDay, sMonth, sStartH, sStartM, sEndH, sEndM):
     conn = nexradaws.NexradAwsInterface()
 
-    downloadDirectory = os.getcwd()
+    downloadDirectory = f"{Path.cwd()}/Data/"
 
     timezone = pytz.timezone("US/Central")
     start = timezone.localize(datetime(sYear, sMonth, sDay, sStartH, sStartM))
     end = timezone.localize(datetime(sYear, sMonth, sDay, sEndH, sEndM))
-    # noinspection PyTypeChecker
+
     scans = conn.get_avail_scans_in_range(start, end, radar)
 
     results = conn.download(scans, downloadDirectory)
@@ -37,7 +32,7 @@ def getDataAWS(radar, sYear, sDay, sMonth, sStartH, sStartM, sEndH, sEndM):
     return "done"
 
 
-@app.route("/getData", methods=["post", "get"])
+@app.route("/getData", methods=["post"])
 def getData():
     if request.method == "POST":
         radarSite = request.form["selectedRadar"]
