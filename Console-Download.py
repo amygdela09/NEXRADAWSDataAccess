@@ -76,9 +76,7 @@ def func5(year, month, day, radar):
         func4(year, month, day)
 
     print('Gathering available scans')
-    # noinspection PyTypeChecker
     availscans = conn.get_avail_scans_in_range(start, end, radar)
-    # print("There are " + str(len(availscans)) + " Nexrad files available for the selected time\n")
     print(f"There are {len(availscans)} Nexrad  files available for {start} - {end}")
     userchoice = input('Download Nexrad? ')
     if userchoice.casefold() in ('yes', 'y', 'download'):
