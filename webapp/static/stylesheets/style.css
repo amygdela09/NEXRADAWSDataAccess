@@ -1,7 +1,15 @@
 ::placeholder { color:black; }
-div.header-div {
+div.data-access-div {
 	background-color:#eceff1;
 	padding:2%;
 	border-radius:3px;
 	margin-top:3%;
 }
+div.header-div {
+	margin:0;
+	color:white;
+	width:100%;
+	padding-left:0.5%;
+}
+ul.dropdown-content.select-dropdown li span {
+    color: black;
