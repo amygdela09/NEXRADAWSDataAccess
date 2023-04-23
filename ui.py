@@ -1,4 +1,5 @@
-
+"""A Qt powered user interface for downloading and viewing NEXRAD data.
+Currently incomplete."""
 import calendar
 import sys
 from pathlib import Path
