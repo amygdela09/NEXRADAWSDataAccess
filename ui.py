@@ -1,3 +1,4 @@
+
 import calendar
 import sys
 from pathlib import Path
@@ -25,6 +26,17 @@ ROOT_DIR = Path(__file__).parent
 
 
 def create_site_dict(conn):
+    """Generates a listing of all available radar sites and for which year/month/day.
+    Saves data as a JSON file locally as "./sites.json".
+    This function is time-consuming as only one connection is used and data is downloaded sequentially.
+
+    Args:
+        :param conn: a `nexradaws.conn` object
+
+    Returns:
+        None
+    """
+    # TODO: put this function into a utility script that can be imported by other project scripts
     sites = {}
     years = conn.get_avail_years()[1:]
     for year in years:
