@@ -13,16 +13,11 @@
 	</header>
 
 	<body>
-	<script>
-	document.addEventListener('DOMContentLoaded', function() {
-		var url = 'http://127.0.0.1:5001/GUI-is-still-open'; 
-		fetch(url, { mode: 'no-cors'});
-		setInterval(function(){ fetch(url, { mode: 'no-cors'});}, 5000)();
-	});
-	</script>
+		<div class="header-div valign-wrapper light-blue accent-3 z-depth-1">
+			<h3>Nexrad AWS Data Access</h3>
+		</div>
 		<div class="container">
-			<div class="header-div">
-				<h3>NEXRAD AWS Data Access</h3>
+			<div class="data-access-div center-align z-depth-1">
 				<form id="searchForm" action="/getData" method="post">
 					<div class="row">
 						<h5 class="col s4 hide-on-small-only">Date:</h5>
@@ -42,39 +37,42 @@
 							</select>
 						</div>
 					</div>
-					<a class="waves-effect waves-light btn-large" id="formSubmit">Submit</a>
-					<br />
-					<span class="warning">One or More Required Field(s) is empty.</span>
+					<a class="waves-effect waves-light btn-large light-blue accent-3" style="color:white;" id="formSubmit">Submit</a>
 				</form>
 			</div>
 		</div>
 	</body>
 	<script>
-		M.AutoInit();
-		$('span.warning').hide(0);
-		$('select').formSelect();
-		var defDate = new Date("2013","04","20","0");
-		var minDate = new Date("1991","07","05","0");
-		$('#date').datepicker({
-			format: "mm/dd/yyyy",
-			defaultDate: defDate,
-			setDefaultDate: true,
-			minDate: minDate,
-			yearRange: 40,
-			autoClose: true
-		});
-		$('#timeFrom').timepicker({ 
-			defaultTime: "14:30",
-			autoClose: true,
-			twelveHour: false
-		});
-		$('#timeTo').timepicker({ 
-			defaultTime: "15:30",
-			autoClose: true,
-			twelveHour:false
-		});
+
 		$(document).ready(function(){
 			//ready
+			//set defaults
+			M.AutoInit();
+			$('span.warning').hide(0);
+			$('select').formSelect();
+			var defDate = new Date("2013","04","20","0");
+			var minDate = new Date("1991","07","05","0");
+			$('#date').datepicker({
+				format: "mm/dd/yyyy",
+				defaultDate: defDate,
+				setDefaultDate: true,
+				minDate: minDate,
+				yearRange: 40,
+				autoClose: true
+			});
+			$('#timeFrom').timepicker({ 
+				defaultTime: "14:30",
+				autoClose: true,
+				twelveHour: false
+			});
+			$('#timeTo').timepicker({ 
+				defaultTime: "15:30",
+				autoClose: true,
+				twelveHour:false
+			});
+			$('#site-select').val('KTLX');
+			
+			//form submit
 			$('#formSubmit').click(function() {
 				event.preventDefault();
 				var selectedDate = $('#date').val();
@@ -84,14 +82,14 @@
 				
 				if (selectedDate != "" && selectedTimeTo != "" && selectedTimeFrom != "" && selectedSite != "") {
 					$.post('/getData', {selectedRadar: selectedSite, timeTo: selectedTimeTo, timeFrom: selectedTimeFrom, date: selectedDate}, function( data ) {
-						alert( data );
+						M.toast({html: data, classes: 'rounded light-blue accent-3'});
 					});
 				}
 				else {
-					$('span.warning').fadeIn(250);
+					M.toast({html: 'One or More Required Field(s) is empty.', classes: 'light-blue accent-3'});
 				}
 			});
-			$('#site-select').val('KTLX');
+			
 		});
 	</script>
 </html>
