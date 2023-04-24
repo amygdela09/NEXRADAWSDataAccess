@@ -3,18 +3,19 @@ from datetime import datetime, date
 import nexradaws
 import pytz
 from flask import Flask, render_template, request, url_for
-from flask_assets import Environment, Bundle
+# from flask_assets import Environment, Bundle
 
 app = Flask(__name__)
-assets = Environment(app)
-bundles = {
-  'example_style': Bundle(
-            'SCSS/materialize.scss',
-            filters='pyscss',
-            output='Gen/materialize.css',
-  )
-} 
-assets.register(bundles)
+# uncomment to use sass/scss (this is just for changing styling of materialize)
+# assets = Environment(app)
+# bundles = {
+  # 'example_style': Bundle(
+            # 'SCSS/materialize.scss',
+            # filters='pyscss',
+            # output='Gen/materialize.css',
+  # )
+# } 
+# assets.register(bundles)
 
 @app.route("/")
 def index():
