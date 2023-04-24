@@ -10,6 +10,8 @@ pytz = "*"
 datetime = "*"
 tqdm = "*"
 pyside6 = "*"
+flask-assets = "*"
+pyscss = "*"
 
 [dev-packages]
 black = {extras = ["d"], version = "*"}
