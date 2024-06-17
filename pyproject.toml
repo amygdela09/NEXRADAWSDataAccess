@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "nexradawsdataaccess"
+version = "0.1.0"
+description = "A Python 3 script/Flask web page for downloading NEXRAD Level II Data from the AWS Hosting Server."
+authors = ["Hunter Thompson <amygdela09@gmail.com>", "Aareon Sullivan <askully13@gmail.com>"]
+license = "GPL-3.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^3.0.3"
+tqdm = "^4.66.4"
+pytz = "^2024.1"
+nexradaws = "^1.1"
+loguru = "^0.7.2"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.4.9"
+isort = "^5.13.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
