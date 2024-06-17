@@ -57,7 +57,7 @@ def select_day(year, month):
         if day not in avail_days:
             raise InvalidSelectionError("Invalid day selection")
         return day
-    except (TypeError, ValueError):
+    except (TypeError, ValueError) as e:
         raise InvalidSelectionError(f"{str(e)}. Invalid year or month selection")
 
 
@@ -70,7 +70,7 @@ def select_site(year, month, day):
         if site not in avail_radars:
             raise InvalidSelectionError("Invalid radar site selection")
         return site
-    except (TypeError, ValueError):
+    except (TypeError, ValueError) as e:
         InvalidSelectionError(f"{str(e)}. Invalid year, month, and/or day selection")
 
 
@@ -82,8 +82,8 @@ def select_times(year, month, day, site):
         start = timezone.localize(datetime(int(year), int(month), int(day), int(userstart[0]), int(userstart[1])))
         end = timezone.localize(datetime(int(year), int(month), int(day), int(userend[0]), int(userend[1])))
         return start, end
-    except (ValueError, TypeError, IndexError):
-        raise InvalidSelectionError("Invalid time selection")
+    except (ValueError, TypeError, IndexError) as e:
+        raise InvalidSelectionError(f"{str(e)}. Invalid time selection")
 
 
 def gather_scans(start, end, site):
