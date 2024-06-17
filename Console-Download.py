@@ -1,10 +1,11 @@
-import nexradaws
-from pathlib import Path
-from tqdm import tqdm
 import sys
-import pytz
 from datetime import datetime
+from pathlib import Path
+
+import nexradaws
+import pytz
 from loguru import logger
+from tqdm import tqdm
 
 
 class NullWriter(object):
@@ -20,26 +21,26 @@ null_writer = NullWriter()
 old_stdout = sys.stdout
 
 # connect to aws
-logger.info('Connecting to AWS')
+logger.info("Connecting to AWS")
 conn = nexradaws.NexradAwsInterface()
 
 
 def select_year():
-    logger.info('Gathering available years')
+    logger.info("Gathering available years")
     avail_years = conn.get_avail_years()
     logger.info(avail_years)
-    selected_year = input('Select Year: ')
+    selected_year = input("Select Year: ")
     if selected_year not in avail_years:
         raise InvalidSelectionError("Invalid year selection")
     return selected_year
 
 
 def select_month(year):
-    logger.info('Gathering available months')
+    logger.info("Gathering available months")
     try:
         avail_months = conn.get_avail_months(year)
         logger.info(avail_months)
-        selected_month = input('Select Month: ')
+        selected_month = input("Select Month: ")
         if selected_month not in avail_months:
             raise InvalidSelectionError("Invalid month selection")
         return selected_month
@@ -47,13 +48,12 @@ def select_month(year):
         raise InvalidSelectionError(f"{str(e)}. Invalid month selection")
 
 
-
 def select_day(year, month):
-    logger.info('Gathering available days')
+    logger.info("Gathering available days")
     try:
         avail_days = conn.get_avail_days(year, month)
         logger.info(avail_days)
-        day = input('Select Day: ')
+        day = input("Select Day: ")
         if day not in avail_days:
             raise InvalidSelectionError("Invalid day selection")
         return day
@@ -62,11 +62,11 @@ def select_day(year, month):
 
 
 def select_site(year, month, day):
-    logger.info('Gathering available radar sites')
+    logger.info("Gathering available radar sites")
     try:
         avail_radars = conn.get_avail_radars(year, month, day)
         logger.info(avail_radars)
-        site = input('Select Radar Site: ')
+        site = input("Select Radar Site: ")
         if site not in avail_radars:
             raise InvalidSelectionError("Invalid radar site selection")
         return site
@@ -75,24 +75,34 @@ def select_site(year, month, day):
 
 
 def select_times(year, month, day, site):
-    timezone = pytz.timezone('US/Central')
-    userstart = input('Start Time (hh:mm): ').split(":")
-    userend = input('End Time (hh:mm): ').split(":")
+    timezone = pytz.timezone("US/Central")
+    userstart = input("Start Time (hh:mm): ").split(":")
+    userend = input("End Time (hh:mm): ").split(":")
     try:
-        start = timezone.localize(datetime(int(year), int(month), int(day), int(userstart[0]), int(userstart[1])))
-        end = timezone.localize(datetime(int(year), int(month), int(day), int(userend[0]), int(userend[1])))
+        start = timezone.localize(
+            datetime(
+                int(year), int(month), int(day), int(userstart[0]), int(userstart[1])
+            )
+        )
+        end = timezone.localize(
+            datetime(int(year), int(month), int(day), int(userend[0]), int(userend[1]))
+        )
         return start, end
     except (ValueError, TypeError, IndexError) as e:
         raise InvalidSelectionError(f"{str(e)}. Invalid time selection")
 
 
 def gather_scans(start, end, site):
-    logger.info('Gathering available scans')
+    logger.info("Gathering available scans")
     try:
         avail_scans = conn.get_avail_scans_in_range(start, end, site)
     except TypeError:
-        raise InvalidSelectionError(f"No scans found for site {site} and times {start} through {end}")
-    logger.info(f"There are {len(avail_scans)} Nexrad files available for {start} - {end}")
+        raise InvalidSelectionError(
+            f"No scans found for site {site} and times {start} through {end}"
+        )
+    logger.info(
+        f"There are {len(avail_scans)} Nexrad files available for {start} - {end}"
+    )
     return avail_scans
 
 
@@ -105,7 +115,7 @@ def download_scan(site: str, avail_scans: list, download_path: str | Path):
         sys.stdout = null_writer  # disable output
         conn.download(avail_scans[current_indice], download_path)
         sys.stdout = old_stdout  # enable output
-    logger.success(f'Scan downloaded to {download_path}')
+    logger.success(f"Scan downloaded to {download_path}")
     sys.exit(0)
 
 
@@ -119,15 +129,17 @@ def main():
         scans = gather_scans(start_time, end_time, site)
 
         if scans is None or len(scans) == 0:
-            logger.error(f"No scans found for site {site} and time {start_time} through {end_time}. Starting from beginning...")
+            logger.error(
+                f"No scans found for site {site} and time {start_time} through {end_time}. Starting from beginning..."
+            )
             main()
-        
-        userchoice = input('Download Nexrad? ')
-        if userchoice.casefold() in ('yes', 'y', 'download'):
+
+        userchoice = input("Download Nexrad? ")
+        if userchoice.casefold() in ("yes", "y", "download"):
             download_path = Path.cwd() / f"Data/{site}/{year}"
             download_scan(site, scans, download_path)
         else:
-            logger.info('Returning to the beginning')
+            logger.info("Returning to the beginning")
             return None
 
     except InvalidSelectionError as e:
