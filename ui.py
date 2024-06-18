@@ -9,19 +9,19 @@ try:
 except ImportError:
     import json
 
+import nexradaws
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QScreen
 from PySide6.QtWidgets import (
     QApplication,
-    QWidget,
-    QVBoxLayout,
-    QPushButton,
-    QDateTimeEdit,
-    QLabel,
-    QHBoxLayout,
     QComboBox,
+    QDateTimeEdit,
+    QHBoxLayout,
+    QLabel,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
 )
-import nexradaws
 
 ROOT_DIR = Path(__file__).parent
 

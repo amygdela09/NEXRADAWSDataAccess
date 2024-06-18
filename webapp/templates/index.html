@@ -60,18 +60,18 @@
 				yearRange: 40,
 				autoClose: true
 			});
-			$('#timeFrom').timepicker({ 
+			$('#timeFrom').timepicker({
 				defaultTime: "14:30",
 				autoClose: true,
 				twelveHour: false
 			});
-			$('#timeTo').timepicker({ 
+			$('#timeTo').timepicker({
 				defaultTime: "15:30",
 				autoClose: true,
 				twelveHour:false
 			});
 			$('#site-select').val('KTLX');
-			
+
 			//form submit
 			$('#formSubmit').click(function() {
 				event.preventDefault();
@@ -79,7 +79,7 @@
 				var selectedTimeTo = $('#timeTo').val();
 				var selectedTimeFrom = $('#timeFrom').val();
 				var selectedSite = $('select').val();
-				
+
 				if (selectedDate != "" && selectedTimeTo != "" && selectedTimeFrom != "" && selectedSite != "") {
 					$.post('/getData', {selectedRadar: selectedSite, timeTo: selectedTimeTo, timeFrom: selectedTimeFrom, date: selectedDate}, function( data ) {
 						M.toast({html: data});
@@ -89,7 +89,7 @@
 					M.toast({html: 'One or More Required Field(s) is empty.'});
 				}
 			});
-			
+
 		});
 	</script>
 </html>

@@ -1,8 +1,10 @@
+from datetime import datetime
 from pathlib import Path
-from datetime import datetime, date
+
 import nexradaws
 import pytz
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request
+
 # from flask_assets import Environment, Bundle
 
 app = Flask(__name__)
@@ -14,7 +16,7 @@ app = Flask(__name__)
             # filters='pyscss',
             # output='Gen/materialize.css',
   # )
-# } 
+# }
 # assets.register(bundles)
 
 @app.route("/")
