@@ -4,13 +4,10 @@ import matplotlib
 
 matplotlib.use("Qt5Agg")
 
-from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QApplication
-
-from matplotlib.backends.backend_qt5agg import (
-    FigureCanvasQTAgg,
-    NavigationToolbar2QT as NavigationToolbar,
-)
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
+from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
 
 
 class MplCanvas(FigureCanvasQTAgg):

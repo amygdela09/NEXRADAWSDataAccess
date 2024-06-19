@@ -1,0 +1,20 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0  # Use the latest revision
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2  # Use the latest version of isort
+    hooks:
+      - id: isort
+        name: isort (Python imports sorter)
+        args: ["--profile", "black"]  # Keeps compatibility with Black-style formatting
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.4.9  # Use the latest release
+    hooks:
+      - id: ruff
